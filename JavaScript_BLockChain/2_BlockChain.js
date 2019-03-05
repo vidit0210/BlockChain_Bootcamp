@@ -1,3 +1,4 @@
+//Mining
 const SHA256 = require('crypto-js/sha256');
 
 class Block {
@@ -7,9 +8,16 @@ class Block {
         this.data = data;
         this.previousHash = previousHash;
         this.hash = this._calculateHash();
+        this.nonce = 0;
     }
     _calculateHash() {
-        return SHA256(this.index + this.timestamp + JSON.stringify(this.data) + this.previousHash).toString();
+        return SHA256(this.index + this.timestamp + JSON.stringify(this.data) + this.previousHash + this.nonce).toString();
+    }
+    _mineBlock(difficulty) {
+        while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+            this.nonce++;
+            this.hash = this._calculateHash();
+        }
     }
 }
 
@@ -25,7 +33,8 @@ class BlockChain {
     }
     addBlock(newBlock) {
         newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock._calculateHash();
+        //newBlock.hash = newBlock._calculateHash();
+        newBlock._mineBlock(9);
         this.chain.push(newBlock);
     }
 
@@ -51,13 +60,8 @@ class BlockChain {
 const SC = new BlockChain();
 const block1 = new Block(1, '5-6-19', '4');
 const block2 = new Block(2, '6-6-19', '4');
+console.log('Mining Block 1');
 SC.addBlock(block1);
+console.log('Mining Block2');
 SC.addBlock(block2);
-console.log(SC);
-console.log('is BlockChain Valid?', SC.isChainValid())
-SC.chain[1].data = '7';
-SC.chain[1].hash = SC.chain[1]._calculateHash();
-
-
-console.log('is BlockChain Valid?', SC.isChainValid())
 console.log(SC);
