@@ -34,7 +34,7 @@ class BlockChain {
     addBlock(newBlock) {
         newBlock.previousHash = this.getLatestBlock().hash;
         //newBlock.hash = newBlock._calculateHash();
-        newBlock._mineBlock(9);
+        newBlock._mineBlock(3);
         this.chain.push(newBlock);
     }
 

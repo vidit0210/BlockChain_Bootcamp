@@ -9,7 +9,7 @@ class Block {
         this.hash = this._calculateHash();
     }
     _calculateHash() {
-        return SHA256(this.index + this.timestamp + JSON.stringify(this.data) + this.previousHash).toString();
+        return SHA256(this.index + this.timestamp + this.data + this.previousHash).toString();
     }
 }
 
@@ -49,15 +49,22 @@ class BlockChain {
 }
 
 const SC = new BlockChain();
-const block1 = new Block(1, '5-6-19', '4');
+
+
+const block1 = new Block(1, '5-6-19', {
+    car: 'Swift',
+    Owner: 'Vidit'
+
+});
 const block2 = new Block(2, '6-6-19', '4');
 SC.addBlock(block1);
 SC.addBlock(block2);
-console.log(SC);
-console.log('is BlockChain Valid?', SC.isChainValid())
-SC.chain[1].data = '7';
-SC.chain[1].hash = SC.chain[1]._calculateHash();
+console.log(SC.chain);
+// console.log('is BlockChain Valid?', SC.isChainValid())
+// SC.chain[1].data = '7';
+// SC.chain[1].hash = SC.chain[1]._calculateHash();
+SC.chain[2].data = 10;
+console.log(isChainValid());
 
-
-console.log('is BlockChain Valid?', SC.isChainValid())
-console.log(SC);
+// console.log('is BlockChain Valid?', SC.isChainValid())
+// console.log(SC);
